@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gold Loan Risk Desk · Hindusthan FinCap</title>
+<meta name="description" content="Gold loan portfolio risk at today's gold rate: LTV, red and amber zones, branch and customer views, uploads and an AI action plan.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9a520' stroke-width='2'%3E%3Cellipse cx='12' cy='6' rx='7' ry='3'/%3E%3Cpath d='M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/style.css">
+<script>window.GL_CONFIG = { dataUrl: 'data/gold_loans.csv', masked: false, edition: 'private', dataLabel: 'FinCap disbursement report, 24 Nov 2026', storageKey: 'gl-uploaded-private-v1', reportUrl: 'https://claude.ai/artifact/T4Y58mYHWNQDwDHGGRiBaU' };</script>
+</head>
+<body>
+<div id="dash-root">
+<div class="gl">
+
+<header class="gl-hero" id="top">
+  <div class="gl-head">
+    <div class="gl-brand">
+      <span class="gl-logo gl-logo-img"><img data-brand-logo alt="Hindusthan FinCap" width="298" height="147"></span>
+      <div>
+        <p class="gl-company" data-brand-name>HINDUSTHAN FINCAP CONSULTANCY LLP</p>
+        <h1 class="gl-title">Gold loan price risk</h1>
+        <p class="gl-meta"><span>Loans given <span data-draw="range_label">—</span></span><span>·</span><span data-draw="data_label">—</span></p>
+      </div>
+    </div>
+    <div class="gl-headr">
+      <div class="gl-btns" role="group" aria-label="Export the loans shown">
+        <button type="button" class="gl-btn gl-btn-gold gl-export" data-export="csv" hidden><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>CSV</button>
+        <button type="button" class="gl-btn gl-btn-gold gl-export" data-export="xlsx" hidden><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Excel</button>
+        <button type="button" class="gl-btn gl-btn-gold gl-export" data-export="pdf" hidden><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>PDF</button>
+      </div>
+      <div class="gl-user" data-draw="user_chip"></div>
+    </div>
+  </div>
+  <p class="gl-msg" role="status"><span data-msg="saved" hidden>Your file is ready.</span><span data-msg="declined" hidden>Download cancelled.</span><span data-msg="none" hidden>No loans to export for these filters.</span><span data-msg="error" hidden>The file could not be created. Please try again.</span></p>
+  <div class="gl-ticker" aria-label="Live figures">
+    <div class="gl-tick gl-gold"><span class="gl-live">24K gold rate</span><b data-draw="tick_rate">—</b></div>
+    <div class="gl-tick gl-gold"><span>22K rate</span><b data-draw="tick_22">—</b></div>
+    <div class="gl-tick gl-gold"><span>18K rate</span><b data-draw="tick_18">—</b></div>
+    <div class="gl-tick"><span>Book LTV</span><b data-draw="tick_ltv">—</b></div>
+    <div class="gl-tick"><span>Red-zone loans</span><b data-draw="tick_red">—</b></div>
+    <div class="gl-tick"><span>Underwater</span><b data-draw="tick_under">—</b></div>
+  </div>
+  <p class="gl-public-note gl-masked-only">Customer names and loan numbers are masked on this public page. Amounts, weights and rates are real.</p>
+  <nav class="gl-tabs" role="tablist" aria-label="Dashboard views">
+    <button type="button" class="gl-tab" role="tab" id="tab-overview" data-tab="overview" aria-controls="overview" aria-selected="true"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>Overview</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-goldrate" data-tab="goldrate" aria-controls="goldrate" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-6 4 3 5-7 4 4"/><path d="M3 21h18"/></svg>Gold rate</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-rbi" data-tab="rbi" aria-controls="rbi" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>RBI &amp; stress</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-ornaments" data-tab="ornaments" aria-controls="ornaments" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="15" r="5"/><path d="M8.5 11.5L6 4M15.5 11.5L18 4M6 4h12"/></svg>Ornaments</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-alm" data-tab="alm" aria-controls="alm" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>ALM &amp; income</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-branches" data-tab="branches" aria-controls="branches" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M9 20v-6h6v6"/><path d="M3 20h18"/></svg>Branches</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-customers" data-tab="customers" aria-controls="customers" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18 14.8c1.8.7 3 2.5 3.5 5.2"/></svg>Customers <span class="gl-badge" data-draw="tab_red"></span></button>
+    <button type="button" class="gl-tab" role="tab" id="tab-advisor" data-tab="advisor" aria-controls="advisor" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>AI expert</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-update" data-tab="update" aria-controls="update" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M5 20h14"/></svg>Update data</button>
+    <button type="button" class="gl-tab" role="tab" id="tab-method" data-tab="method" aria-controls="method" aria-selected="false" tabindex="-1"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>How it works</button>
+  </nav>
+</header>
+
+<section class="gl-card gl-filters" id="filters" aria-label="Filters">
+  <div class="gl-field gl-rate">
+    <label for="gl-rate-num">24K gold rate today (₹ per gram)</label>
+    <div class="gl-raterow"><input id="gl-rate-num" class="gl-num" type="number" min="1000" max="50000" step="1" inputmode="numeric"><input id="gl-rate-range" class="gl-range" type="range" min="10000" max="17000" step="25" aria-label="24K gold rate slider"></div>
+    <div class="gl-grpick" data-draw="gr_pick"></div>
+    <p class="gl-hint gl-grline" data-draw="gr_line"></p>
+    <p class="gl-hint">Average at loan <span data-draw="k_ratethen">—</span> · today is <span class="gl-pchg gl-bad"><span data-draw="k_pricechg">—</span><span class="gl-pdown"> lower</span><span class="gl-pup" hidden> higher</span></span></p>
+  </div>
+  <div class="gl-field"><label for="gl-from">Loan month from</label><select id="gl-from" class="dash-select" data-draw="from_sel"></select></div>
+  <div class="gl-field"><label for="gl-to">Loan month to</label><select id="gl-to" class="dash-select" data-draw="to_sel"></select></div>
+  <div class="gl-field"><label for="gl-branch">Branch</label><select id="gl-branch" class="dash-select" data-draw="branch_sel"></select></div>
+  <div class="gl-field"><label for="gl-rm">Relationship manager</label><select id="gl-rm" class="dash-select" data-draw="rm_sel"></select></div>
+  <div class="gl-field"><label for="gl-orn">Main ornament</label><select id="gl-orn" class="dash-select" data-draw="orn_sel"></select></div>
+  <div class="gl-field gl-intfield"><label for="gl-asof">Interest due as on</label><input id="gl-asof" class="gl-num" type="date"><div class="gl-btns gl-intchips" data-draw="int_chips"></div><p class="gl-hint gl-intline" data-draw="int_line"></p></div>
+  <div class="gl-field"><label for="gl-intmode">Interest method</label><select id="gl-intmode" class="dash-select"><option value="cap">Interest capitalised at month end</option><option value="simple">Simple interest (no capitalisation)</option><option value="pos">POS as in report or upload</option></select></div>
+  <div class="gl-field"><label for="gl-tier">Risk zone</label><select id="gl-tier" class="dash-select"><option value="">All zones</option><option value="RED">Red (LTV 90%+)</option><option value="AMBER">Amber (75–90%)</option><option value="GREEN">Green (below 75%)</option></select></div>
+  <div class="gl-field"><button type="button" id="gl-reset" class="gl-btn"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg>Reset filters</button></div>
+  <div class="gl-karats" aria-label="Gold rate today by karat">
+    <div class="gl-karhead"><div><b>Gold rate today by karat (₹ per gram)</b><span>Filled in from the 24K rate × karat ÷ 24, the way jewellers quote 22K (91.7%) and 18K (75%). Type over any rate to use your own; each pledged item is valued at its own karat’s rate.</span></div><button type="button" id="gl-kreset" class="gl-btn">Reset to auto</button></div>
+    <label class="gl-kar"><span>18K <small>75.0% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="18" aria-label="18 karat gold rate per gram"><em data-draw="kauto" data-k="18"></em><em data-draw="kcount" data-k="18"></em></label>
+    <label class="gl-kar"><span>19K <small>79.2% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="19" aria-label="19 karat gold rate per gram"><em data-draw="kauto" data-k="19"></em><em data-draw="kcount" data-k="19"></em></label>
+    <label class="gl-kar"><span>20K <small>83.3% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="20" aria-label="20 karat gold rate per gram"><em data-draw="kauto" data-k="20"></em><em data-draw="kcount" data-k="20"></em></label>
+    <label class="gl-kar"><span>21K <small>87.5% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="21" aria-label="21 karat gold rate per gram"><em data-draw="kauto" data-k="21"></em><em data-draw="kcount" data-k="21"></em></label>
+    <label class="gl-kar"><span>22K <small>91.7% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="22" aria-label="22 karat gold rate per gram"><em data-draw="kauto" data-k="22"></em><em data-draw="kcount" data-k="22"></em></label>
+    <label class="gl-kar"><span>23K <small>95.8% pure</small></span><input type="number" min="1000" max="50000" step="1" inputmode="numeric" data-karat="23" aria-label="23 karat gold rate per gram"><em data-draw="kauto" data-k="23"></em><em data-draw="kcount" data-k="23"></em></label>
+    <div class="gl-kar gl-k24"><span>24K <small>99.9% pure</small></span><b data-k24>—</b><em>set in the 24K box above</em><em data-draw="kcount" data-k="24"></em></div>
+  </div>
+</section>
+
+<p class="gl-lede" id="takeaway">At <b data-draw="rate_now">—</b> a gram for 24K gold, <b class="gl-redtxt" data-draw="t_red">—</b> of the <b data-draw="t_loans">—</b> loans selected are in the red zone, holding <b data-draw="t_redshare">—</b> of the amount owed. <b class="gl-redtxt" data-draw="t_under">—</b> are underwater: the gold is now worth less than what the customer owes.</p>
+
+<section id="kpis" class="gl-kpis" aria-label="Key figures">
+  <div class="gl-card gl-kpi" id="kpi-owed">
+    <div class="gl-kh"><span class="gl-ico blue"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M16 15h2"/></svg></span><span>Amount owed now</span><span class="gl-info"><button type="button" aria-label="About amount owed" aria-describedby="tip-owed">i</button><span role="tooltip" id="tip-owed" class="gl-infotip">Principal plus interest due as on the date chosen in “Interest due as on”, at each loan’s ROI with interest added to the balance at every month end (the loan system’s method), compared with the amount originally lent. Change “Interest method” to see simple interest or the report’s POS.</span></span></div>
+    <p class="gl-kv"><span class="dash-skeleton" data-draw="k_owed">—</span></p>
+    <p class="gl-kn">Lent <span data-draw="k_lent">—</span> · <span data-draw="k_interest">—</span> more</p>
+    <p class="gl-kn" data-draw="k_posint"></p>
+  </div>
+  <div class="gl-card gl-kpi" id="kpi-value">
+    <div class="gl-kh"><span class="gl-ico gold"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/><path d="M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span><span>Gold value today</span><span class="gl-info"><button type="button" aria-label="About gold value" aria-describedby="tip-value">i</button><span role="tooltip" id="tip-value" class="gl-infotip">Pure-gold weight of all pledged items × today’s 24K rate. “Was” uses the market rate the valuer recorded on each loan date.</span></span></div>
+    <p class="gl-kv"><span class="dash-skeleton" data-draw="k_valnow">—</span></p>
+    <p class="gl-kn">Was <span data-draw="k_valthen">—</span> · <span class="gl-vchg gl-bad"><span data-draw="k_valchg">—</span><span class="gl-vdown"> lower</span><span class="gl-vup" hidden> higher</span></span></p>
+  </div>
+  <div class="gl-card gl-kpi" id="kpi-ltv">
+    <div class="gl-kh"><span class="gl-ico teal"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/></svg></span><span>Book LTV</span><span class="gl-info"><button type="button" aria-label="About LTV" aria-describedby="tip-ltv">i</button><span role="tooltip" id="tip-ltv" class="gl-infotip">Loan-to-value: amount owed ÷ value of the pledged gold at today’s rate. Above 100% the gold is worth less than the loan. The dotted line on the gauge is the LTV when the loans were given.</span></span></div>
+    <p class="gl-kv"><span class="dash-skeleton" data-draw="k_ltvnow">—</span></p>
+    <div class="gl-gauge" data-draw="ltvgauge"></div>
+    <p class="gl-kn">Was <span data-draw="k_ltvthen">—</span> when given</p>
+  </div>
+  <div class="gl-card gl-kpi gl-click zone-red" id="kpi-red" role="button" tabindex="0" data-zone="RED" aria-pressed="false" aria-label="Red zone loans: open these accounts">
+    <div class="gl-kh"><span class="gl-ico red"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg></span><span>Red zone · LTV 90%+</span></div>
+    <p class="gl-kv gl-bad"><span class="dash-skeleton" data-draw="k_red">—</span></p>
+    <p class="gl-kn">Owing <span data-draw="k_redamt">—</span> · <span data-draw="k_under">—</span> underwater</p>
+    <p class="gl-go">View accounts →</p>
+  </div>
+  <div class="gl-card gl-kpi gl-click zone-amber" id="kpi-amber" role="button" tabindex="0" data-zone="AMBER" aria-pressed="false" aria-label="Amber zone loans: open these accounts">
+    <div class="gl-kh"><span class="gl-ico amber"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span>Amber zone · LTV 75–90%</span></div>
+    <p class="gl-kv"><span class="dash-skeleton" data-draw="k_amber">—</span></p>
+    <p class="gl-kn">Owing <span data-draw="k_amberamt">—</span></p>
+    <p class="gl-go">View accounts →</p>
+  </div>
+  <div class="gl-card gl-kpi" id="kpi-topup">
+    <div class="gl-kh"><span class="gl-ico green"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16V8"/><path d="M8.5 11.5L12 8l3.5 3.5"/></svg></span><span>Top-up to restore 75%</span><span class="gl-info"><button type="button" aria-label="About top-up" aria-describedby="tip-topup">i</button><span role="tooltip" id="tip-topup" class="gl-infotip">Total that customers would need to repay, or cover with extra gold, to bring every loan back to 75% LTV at today’s rate. Only loans above 75% count.</span></span></div>
+    <p class="gl-kv"><span class="dash-skeleton" data-draw="k_topup">—</span></p>
+    <p class="gl-kn">Across <span data-draw="k_topupn">—</span> loans above 75% LTV</p>
+  </div>
+</section>
+
+<section id="overview" class="gl-panel" role="tabpanel" aria-labelledby="tab-overview">
+  <div class="gl-card" id="zones">
+    <h2>Where is the amount owed sitting?</h2>
+    <p class="gl-sub">Amount owed in each risk zone at today’s rate. Click a slice or a zone to open its accounts.</p>
+    <div class="gl-zonewrap">
+      <div class="gl-donut" data-draw="zonedonut"></div>
+      <div class="gl-zones" data-draw="zonecards"></div>
+    </div>
+  </div>
+  <div class="gl-two">
+    <div class="gl-card" id="price-by-month"><h2>How far has gold fallen since each loan?</h2><p class="gl-sub">Change in the 24K rate from the loan date to today, by month the loan was given. Darker red = bigger fall.</p><div class="gl-chart" data-draw="ratechart"></div></div>
+    <div class="gl-card" id="ltv-by-month"><h2>Which loan months are most exposed?</h2><p class="gl-legend"><span><i class="gl-sw"></i>LTV at loan</span><span><i class="gl-sw" style="background:var(--color-bad)"></i>LTV today (coloured by zone)</span></p><div class="gl-chart" data-draw="ltvchart"></div></div>
+  </div>
+  <div class="gl-card" id="sensitivity">
+    <h2>What if gold falls further?</h2>
+    <p class="gl-sub">Loans that would be red zone or underwater at each 24K rate. The gold line is today’s rate. Move the rate slider to see it shift.</p>
+    <p class="gl-legend"><span><i class="gl-sw" style="background:var(--color-bad)"></i>Red-zone loans (LTV 90%+)</span><span><i class="gl-sw" data-sw="1"></i>Underwater loans (LTV 100%+)</span></p>
+    <div class="gl-chart" data-draw="senschart"></div>
+  </div>
+</section>
+
+<section id="goldrate" class="gl-panel" role="tabpanel" aria-labelledby="tab-goldrate" hidden>
+  <div class="gl-card">
+    <h2>Gold rate today</h2>
+    <p class="gl-sub gl-grstatus" data-draw="gr_status"></p>
+    <div class="gl-kpis gl-grkpis" data-draw="gr_kpis"></div>
+    <div data-draw="gr_auto"></div>
+  </div>
+  <div class="gl-card" id="gr-history">
+    <div class="gl-grhead"><div><h2>24K rate, last 5 years</h2><p class="gl-sub">Indian 24K estimate per gram (gold line), your valuers’ rate on loan days (blue dots) and the rate in use (red dashes). Click the chart to see any date.</p></div><div class="gl-btns" data-draw="gr_ranges"></div></div>
+    <div class="gl-chart" data-draw="gr_chart"></div>
+    <div class="gl-wrap"><table class="gl-table"><thead><tr><th>Year</th><th class="n">Average</th><th class="n">Low</th><th class="n">High</th><th class="n">Year end</th><th class="n">Change</th></tr></thead><tbody data-draw="gr_years"></tbody></table></div>
+  </div>
+  <div class="gl-card" id="gr-date-card">
+    <h2>Rate on a date</h2>
+    <div class="gl-field gl-grdate"><label for="gr-date">Choose a date</label><input id="gr-date" class="gl-num" type="date"></div>
+    <div data-draw="gr_day"></div>
+  </div>
+  <div class="gl-card">
+    <div class="gl-grhead"><div><h2>Rates used</h2><p class="gl-sub">Every change to the rate in use, newest first. Kept in this browser only.</p></div><button type="button" class="gl-btn" id="gr-log-clear">Clear list</button></div>
+    <div class="gl-wrap"><table class="gl-table"><thead><tr><th>When</th><th class="n">24K rate</th><th>Set by</th></tr></thead><tbody data-draw="gr_log"></tbody></table></div>
+  </div>
+  <details class="gl-card gl-grcal">
+    <summary>How the rate is worked out, and calibration</summary>
+    <p class="gl-sub">Daily international gold closes (xaus.com) × the rupee–dollar rate (European Central Bank, via frankfurter.dev) ÷ 31.1035 grams, plus the import duty in force that day and a small market premium. The page fetches new prices when it opens and every 6 hours. These are reference estimates: for LTV, RBI asks for the lower of the 30-day average and the previous day’s close published by IBJA or a SEBI-regulated exchange, so enter the IBJA rate below to calibrate.</p>
+    <div data-draw="gr_calib"></div>
+  </details>
+</section>
+
+<section id="rbi" class="gl-panel" role="tabpanel" aria-labelledby="tab-rbi" hidden>
+  <div class="gl-card gl-call" id="business-call">
+    <h2>Business call</h2>
+    <p class="gl-sub">Decisions for this week, worked out from the loans matching your filters at <span data-draw="rate_now3">—</span> a gram (24K).</p>
+    <ol class="gl-calls" data-draw="rbi_calls"></ol>
+    <p class="gl-sub" data-draw="rbi_report"></p>
+  </div>
+  <div class="gl-kpis gl-rbikpis" data-draw="rbi_kpis"></div>
+  <div class="gl-card" id="rbi-caps">
+    <h2>Loans over the RBI cap, by borrower size</h2>
+    <p class="gl-sub">RBI caps LTV by the borrower’s total gold loans: up to ₹2.5 lakh 85%, ₹2.5–5 lakh 80%, above ₹5 lakh 75%. These are 12-month bullet loans, so LTV is measured on the total repayable at maturity (principal + interest), and the cap must hold for the whole tenure.</p>
+    <div class="gl-wrap"><table class="gl-table"><thead><tr><th>Borrower band</th><th class="n">Cap</th><th class="n">Borrowers</th><th class="n">Loans</th><th class="n">Owed</th><th class="n">Loans over cap</th><th class="n">Owed on those</th><th class="n">To pay to reach cap</th></tr></thead><tbody data-draw="rbi_bands"></tbody></table></div>
+    <p class="gl-sub gl-fine">Loan purpose is not in the report, so every loan is treated as a consumption loan, where these caps apply.</p>
+  </div>
+  <div class="gl-card" id="rbi-stress">
+    <h2 data-draw="stress_title">If gold keeps falling</h2>
+    <p class="gl-sub">Loss if all pledged gold were sold: amount owed − (gold value × 0.9 − ₹1,000 per loan). The 10% covers the auction discount. Hover a bar for details.</p>
+    <div class="gl-chart" data-draw="stresschart"></div>
+  </div>
+  <div class="gl-card" id="rbi-maturity">
+    <h2>When the loans fall due</h2>
+    <p class="gl-sub">Amount repayable at maturity, by month. A bullet loan can be renewed only after its interest is paid, so plan collections for the big months now.</p>
+    <div class="gl-chart" data-draw="maturitychart"></div>
+  </div>
+</section>
+
+<section id="ornaments" class="gl-panel" role="tabpanel" aria-labelledby="tab-ornaments" hidden>
+  <div class="gl-card">
+    <h2 data-draw="orn_title">Gold by ornament type</h2>
+    <p class="gl-sub">Every piece is valued at its own karat. A loan's amount owed is split across its pieces by value, so LTV shows what is owed against that type of gold. Underwater loans and loss are counted by each loan's main (most valuable) ornament. Click a row to show only those loans across the dashboard.</p>
+    <div class="gl-wrap"><table class="gl-table gl-orntable"><thead><tr><th>Ornament</th><th class="n">Pieces</th><th class="n">Loans (main)</th><th class="n">Net weight</th><th class="n">Avg karat</th><th class="n">20K or below</th><th class="n">Stones in gross</th><th class="n">Value today</th><th class="n">Share</th><th class="n">Change</th><th class="n">LTV</th><th class="n">Underwater</th><th class="n">Loss if sold</th></tr></thead><tbody data-draw="orn_table"></tbody></table></div>
+    <p class="gl-hint" data-draw="orn_filterline"></p>
+  </div>
+  <div class="gl-two">
+    <div class="gl-card"><h2>Value and LTV by ornament</h2><p class="gl-sub">Gold value today (bar) and LTV (label). Hover for details.</p><div class="gl-chart" data-draw="orn_chart"></div></div>
+    <div class="gl-card"><h2 data-draw="orn_month_title">Mangalsutra share of new lending</h2><p class="gl-sub">Share of the gold value taken each month, at the value on the loan date. Dashed line: proposed 40% cap.</p><div class="gl-chart" data-draw="orn_month"></div></div>
+  </div>
+  <div class="gl-card">
+    <h2>Ornament mix by branch</h2>
+    <p class="gl-sub">Share of each branch's gold value today. Mangalsutra above 45% or earrings above 20% is highlighted.</p>
+    <div class="gl-wrap"><table class="gl-table"><thead><tr><th>Branch</th><th class="n">Gold value</th><th class="n">Mangalsutra</th><th class="n">Necklaces &amp; haars</th><th class="n">Earrings</th><th class="n">Chains</th><th class="n">Rings</th><th class="n">Bangles</th><th class="n">Pendants &amp; coins</th><th class="n">Other</th></tr></thead><tbody data-draw="orn_branch"></tbody></table></div>
+  </div>
+</section>
+
+<section id="alm" class="gl-panel" role="tabpanel" aria-labelledby="tab-alm" hidden>
+  <div class="gl-card">
+    <h2>ALM &amp; income — month on month</h2>
+    <p class="gl-sub">Principal and interest of the loans shown, month by month from the first loan to the last maturity. Interest is split between BUCC (interest expense at the BUCC rate, out of each loan’s ROI) and FinCap (the rest), then salary and IT fees are taken off.</p>
+    <div data-draw="alm_settings"></div>
+    <p class="gl-hint" data-draw="alm_example"></p>
+  </div>
+  <div class="gl-kpis" data-draw="alm_kpis"></div>
+  <div class="gl-card">
+    <h2>FinCap interest income vs expenses</h2>
+    <p class="gl-sub">Gold: FinCap’s share of interest earned each month (accrual). Red: salary plus IT fees. Shaded months are projected from the loans’ contract terms.</p>
+    <div class="gl-chart" data-draw="alm_chart"></div>
+    <p class="gl-hint" data-draw="alm_line"></p>
+  </div>
+  <div class="gl-card">
+    <div class="gl-grhead"><div><h2>Month-on-month ALM</h2><p class="gl-sub">Accrual columns show income earned in the month; the last four columns show cash when customers repay at maturity.</p></div><div class="gl-btns"><button type="button" class="gl-btn" data-alm-xlsx><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Download ALM (Excel)</button></div></div>
+    <p class="gl-hint" id="alm-msg" aria-live="polite"></p>
+    <div class="gl-wrap gl-almwrap"><table class="gl-table gl-almtable"><thead><tr><th>Month</th><th></th><th class="n">Loans</th><th class="n">Disbursed</th><th class="n">Principal maturing</th><th class="n">Principal outstanding</th><th class="n">AUM (balance)</th><th class="n">Interest accrued</th><th class="n">BUCC interest exp.</th><th class="n">FinCap interest income</th><th class="n">Salary</th><th class="n">IT fees</th><th class="n">Net income</th><th class="n">Cumulative net</th><th class="n">Interest received</th><th class="n">To BUCC</th><th class="n">FinCap share</th><th class="n">Total cash in</th></tr></thead><tbody data-draw="alm_table"></tbody></table></div>
+    <p class="gl-hint">Each loan is a 12-month bullet loan, repaid in full at maturity. Interest: daily at ROI/365, added to the balance at every month end; from the report month the balance starts from the report’s POS. Closed loans are not included because the report has no closure dates. AUM = loan balance at month end.</p>
+  </div>
+</section>
+
+<section id="branches" class="gl-panel" role="tabpanel" aria-labelledby="tab-branches" hidden>
+  <div class="gl-card" id="branch-chart">
+    <h2>Which branches carry the most red-zone money?</h2>
+    <p class="gl-sub">Amount owed on red-zone loans, with the number of loans. Darker bars = higher branch LTV. Click a branch to filter the whole dashboard.</p>
+    <div class="gl-chart" data-draw="branchchart"></div>
+  </div>
+  <div class="gl-card" id="branch-summary">
+    <h2>Branch summary</h2>
+    <p class="gl-sub">Click a column heading to sort, or a branch name to filter.</p>
+    <div class="gl-wrap"><table class="gl-table" id="branch-sum"><thead><tr>
+      <th><button type="button" class="gl-sort" data-bsort="branch">Branch</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="loans">Loans</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="outstanding_lakh">Owed</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="red">Red</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="amber">Amber</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="underwater">Underwater</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="ltv_today_pct">LTV today</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-bsort="topup_lakh">Top-up to 75%</button></th>
+    </tr></thead><tbody data-draw="btable"></tbody></table></div>
+  </div>
+</section>
+
+<section id="customers" class="gl-panel" role="tabpanel" aria-labelledby="tab-customers" hidden>
+  <div class="gl-card" id="karat-mix">
+    <h2>Gold by karat</h2>
+    <p class="gl-sub">Every karat a customer pledged is valued at its own rate (22K at the 22K rate, 18K at the 18K rate), then added up for the loan’s LTV. Click any customer below to see their karat-by-karat calculation.</p>
+    <div class="gl-wrap"><table class="gl-table"><thead><tr><th>Karat</th><th class="n">Loans</th><th class="n">Net weight</th><th class="n">Pure gold</th><th class="n">Rate today (₹/g)</th><th class="n">Value at loan</th><th class="n">Value today</th><th class="n">Change</th><th class="n">Loans mainly this karat · LTV</th></tr></thead><tbody data-draw="karatmix"></tbody></table></div>
+  </div>
+  <div class="gl-card">
+    <div class="gl-toolbar">
+      <div class="gl-btns" data-draw="zonepills" role="group" aria-label="Filter by risk zone"></div>
+      <div class="gl-btns">
+        <label class="gl-search"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input id="gl-search" type="search" placeholder="Search customer, loan or RM" aria-label="Search customer, loan account or RM"></label>
+        <button type="button" class="gl-btn gl-export" data-export="csv" hidden>CSV</button>
+        <button type="button" class="gl-btn gl-export" data-export="xlsx" hidden>Excel</button>
+        <button type="button" class="gl-btn gl-export" data-export="pdf" hidden>PDF</button>
+      </div>
+    </div>
+    <p class="gl-count" data-draw="reg_count" aria-live="polite">—</p>
+    <div class="gl-card gl-detail" id="loan-detail" data-draw="detail" tabindex="-1" aria-label="Loan details"></div>
+    <div class="gl-wrap"><table class="gl-table" id="loan-table"><thead><tr>
+      <th><button type="button" class="gl-sort" data-sort="loan">Loan account</button></th>
+      <th><button type="button" class="gl-sort" data-sort="customer">Customer</button></th>
+      <th><button type="button" class="gl-sort" data-sort="branch">Branch</button></th>
+      <th><button type="button" class="gl-sort" data-sort="rm">RM</button></th>
+      <th><button type="button" class="gl-sort" data-sort="month">Loan month</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="outstanding">Owed now</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="interest">Interest</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="value_today">Gold value today</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="price_change_pct">Price change</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="ltv_today_pct">LTV today</button></th>
+      <th class="n"><button type="button" class="gl-sort" data-sort="topup_75">Top-up to 75%</button></th>
+      <th><button type="button" class="gl-sort" data-sort="tier">Zone</button></th>
+      <th class="gl-actcol">Action</th>
+    </tr></thead><tbody data-draw="register"></tbody></table></div>
+    <div class="gl-pager"><label>Rows per page <select id="gl-size" class="dash-select"><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label><div class="gl-pages" data-draw="pager"></div></div>
+  </div>
+</section>
+
+<section id="advisor" class="gl-panel" role="tabpanel" aria-labelledby="tab-advisor" hidden>
+  <div class="gl-card gl-ai-hero">
+    <div class="gl-ai-head">
+      <div>
+        <h2>AI expert: action plan</h2>
+        <p class="gl-sub" style="margin-bottom:0">Suggestions worked out from the loans and filters on screen at the current gold rate. They change as you move the rate or filters. Check them before acting.</p>
+      </div>
+      <div class="gl-btns gl-ai-only" hidden>
+        <button type="button" id="ai-ask" class="gl-btn gl-btn-dark"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/></svg>Ask Claude for an expert plan</button>
+        <button type="button" id="ai-stop" class="gl-btn" hidden>Stop</button>
+      </div>
+    </div>
+    <p class="gl-note info gl-ai-off" hidden>The plan below is worked out by built-in rules. A written plan from Claude is available in the private Claude version of this dashboard.</p>
+  </div>
+  <div class="gl-card gl-ai-only" id="ai-card" hidden>
+    <h2>Claude’s expert plan</h2>
+    <p class="gl-sub" id="ai-status">Claude reads the totals, branch and RM figures and the 20 riskiest loans (without customer names).</p>
+    <div class="gl-aiout" id="ai-output"></div>
+  </div>
+  <div class="gl-plan" data-draw="advisor_plan"></div>
+</section>
+
+<section id="update" class="gl-panel" role="tabpanel" aria-labelledby="tab-update" hidden>
+  <div class="gl-card">
+    <h2>Data in use</h2>
+    <div class="gl-status" data-draw="data_status" style="margin-top:8px"></div>
+    <div class="gl-btns" style="margin-top:12px">
+      <label class="gl-check" style="margin:0"><input type="checkbox" id="gl-remember"><span>Keep uploaded data on this computer (stays in this browser only)</span></label>
+      <button type="button" id="gl-restore" class="gl-btn">Restore original data</button>
+    </div>
+  </div>
+  <div class="gl-upgrid">
+    <div class="gl-card">
+      <h2>POS &amp; interest update</h2>
+      <p class="gl-sub">Refresh what each customer owes. Upload the daily POS file from your loan system.</p>
+      <ol class="gl-steps"><li>Download the format below, or use your own POS file.</li><li>Upload the .xlsx or .csv file.</li><li>Check the loan account, POS and interest columns it found.</li><li>Apply: amount owed = POS + interest, and every figure updates.</li></ol>
+      <div class="gl-tpl"><p class="gl-tplh"><b>Download the format</b> — only the 3 columns needed: Loan Account, POS, Interest Due. Includes a Guide sheet.</p><div class="gl-btns"><button type="button" class="gl-btn" data-tpl="pos:xlsx"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Excel format</button><button type="button" class="gl-btn" data-tpl="pos:csv"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>CSV format</button></div><p class="gl-hint gl-tplmsg" aria-live="polite"></p></div>
+      <label class="gl-drop" id="drop-pos"><input type="file" accept=".xlsx,.xlsm,.csv"><b>Drop the POS &amp; interest file here</b><span>or click to choose · .xlsx or .csv</span></label>
+      <div id="pos-result"></div>
+    </div>
+    <div class="gl-card">
+      <h2>New disbursement report</h2>
+      <p class="gl-sub">Add newly disbursed gold loans. Upload the FinCap disbursement report, or fill in the short format below.</p>
+      <ol class="gl-steps"><li>In Excel, open the report and save it once so the Status, POS and DB amount values are stored.</li><li>Upload it here.</li><li>Choose to add new loans, or replace everything.</li></ol>
+      <div class="gl-tpl"><p class="gl-tplh"><b>Download the format</b> — only the 21 columns the dashboard reads (no address, mobile, PAN or Aadhaar). Includes a Guide sheet with an example of each.</p><div class="gl-btns"><button type="button" class="gl-btn" data-tpl="disb:xlsx"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Excel format</button><button type="button" class="gl-btn" data-tpl="disb:csv"><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>CSV format</button></div><p class="gl-hint gl-tplmsg" aria-live="polite"></p></div>
+      <label class="gl-drop" id="drop-disb"><input type="file" accept=".xlsx,.xlsm,.csv"><b>Drop the disbursement report here</b><span>or click to choose · .xlsx or .csv</span></label>
+      <div id="disb-result"></div>
+    </div>
+  </div>
+  <p class="gl-hint">Files are read inside your browser. Nothing is uploaded to any server.</p>
+</section>
+
+<section id="method" class="gl-panel" role="tabpanel" aria-labelledby="tab-method" hidden>
+  <div class="gl-card gl-method">
+    <h2>How the numbers are worked out</h2>
+    <ul>
+      <li><b>Loans:</b> active gold loans (status S04) with an amount owed above zero. Closed loans are left out.</li>
+      <li class="gl-masked-only"><b>Privacy:</b> on this public page, customer names are shortened to an initial pattern and loan account numbers are partly hidden. Mobile numbers, addresses and ID numbers are not included.</li>
+      <li><b>Pure-gold weight:</b> each item’s net weight × karat ÷ 24. 10 g of 22K counts as 9.17 g of pure gold; 10 g of 19K as 7.92 g.</li>
+      <li><b>Gold value at loan:</b> net weight × the open-market rate the valuer recorded that day. The 24K rate at loan is that value ÷ pure-gold weight.</li>
+      <li><b>Gold value today:</b> each item’s net weight × today’s rate for its karat. By default a karat’s rate is the 24K rate × karat ÷ 24 (22K = 91.7%, 18K = 75%, as jewellers quote); you can type your own rate for 18K to 23K.</li>
+      <li><b>Amount owed:</b> POS from the report. After a POS &amp; interest upload, POS + interest (or POS alone if you say it already includes interest).</li>
+      <li><b>LTV:</b> at loan = amount lent ÷ gold value at loan. Today = amount owed now ÷ gold value today.</li>
+      <li><b>Zones:</b> Red 90% or more, Amber 75% to 90%, Green below 75%. Underwater = 100% or more. These are review bands for this dashboard, not a regulatory class.</li>
+      <li><b>RBI caps:</b> RBI (Lending Against Gold and Silver Collateral) Directions, 2025. Cap by the borrower’s total amount lent: up to ₹2.5 lakh 85%, ₹2.5–5 lakh 80%, above ₹5 lakh 75%. For bullet loans LTV = amount repayable at maturity ÷ gold value. RBI values gold at the lower of the 30-day average and the previous day’s close (IBJA or a SEBI-regulated exchange); enter that rate before acting. Borrowers above ₹2.5 lakh need a detailed credit assessment.</li>
+      <li><b>Borrower:</b> loans are grouped by Customer ID, else PAN, else name and date of birth. The key is scrambled, so no ID is shown. After a “merge” upload, borrower totals are exact again once the full report is uploaded with “Replace”.</li>
+      <li><b>Stress test:</b> gold 5%, 10%, 15% and 20% below the rate in use. Loss = amount owed − (gold value × 0.9 − ₹1,000), never below zero per loan.</li>
+      <li><b>Top-up to 75%:</b> amount owed − 75% of gold value today, for loans above 75%.</li>
+      <li><b>AI expert:</b> the action plan uses simple rules on the figures shown. Where available, Claude can write a fuller plan from the same figures; customer names are not sent.</li>
+      <li><b>Gold rate:</b> pick any date in the last year with the calendar, the “Last 1 year” list or the quick buttons (today, 1 week, 1 month, 3 months, 6 months, 1 year ago). Rates are Indian 24K estimates built from the international price, the rupee rate and the import duty, calibrated to the Goodreturns rate of ₹12,458 on 25 Nov 2026 (see the Gold rate tab). Enter the day’s IBJA rate before acting.</li>
+      <li><b>Exports:</b> CSV, Excel and PDF save the loans the customer list is showing, with every filter and the search applied.</li>
+      <li><b>Follow-up:</b> contact customers through the standard process (top-up or part-payment requests, reminders). Auction only under the RBI gold-loan directions and board-approved policy.</li>
+    </ul>
+  </div>
+</section>
+
+<p class="gl-foot"><b data-brand-name>HINDUSTHAN FINCAP CONSULTANCY LLP</b><span>·</span><svg class="gl-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-draw="data_label2">—</span><span>· Gold rate in use: <span data-draw="rate_now2">—</span> a gram (24K)</span></p>
+</div>
+</div>
+<noscript><p style="padding:24px">This dashboard needs JavaScript turned on.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="js/brand.js"></script>
+<script src="js/dash-shim.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/table.js"></script>
+<script src="js/export.js"></script>
+<script src="js/upload.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/advisor.js"></script>
+<script src="js/rbi.js"></script>
+<script src="js/gold-history.js"></script>
+<script src="js/goldrate.js"></script>
+<script src="js/ornaments.js"></script>
+<script src="js/interest.js"></script>
+<script src="js/alm.js"></script>
+</body>
+</html>
