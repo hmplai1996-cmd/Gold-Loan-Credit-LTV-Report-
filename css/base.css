@@ -1,0 +1,135 @@
+/*
+  VOICE   a lender's risk desk: clear, urgent where it matters, calm elsewhere
+  IDEA    a gold assay counter: deep green velvet tray, gold metal, red tags on risky pledges
+  PICTURE live zone donut + LTV gauge that move as the gold rate slider moves
+  COLOUR  deep green #0c3b31 band, gold #d9a520, coral #f0533f for red zone, amber #f2a51a, leaf #23a06b
+  TYPE    Inter Tight 700 for titles and big figures, Inter for text
+  LAYOUT  hero band with rate + tabs, filters, figure row, then one tab at a time
+*/
+:root {
+  color-scheme: light;
+  --color-fg: #14201c;
+  --color-fg-muted: #5b6863;
+  --color-bg: #f3f5f2;
+  --color-panel: #ffffff;
+  --color-border-line: #dfe5e1;
+  --color-ok: #1f9a63;
+  --color-warn: #e8960c;
+  --color-bad: #e4422f;
+
+  --hero-1: #0c3b31;
+  --hero-2: #115446;
+  --hero-ink: #ffffff;
+  --hero-muted: #b9d3ca;
+  --gold: #d9a520;
+  --gold-soft: #f7e3a6;
+
+  --tint-red: #fdebe8;
+  --tint-amber: #fdf2dc;
+  --tint-green: #e3f4eb;
+  --tint-blue: #e6eefc;
+  --tint-gold: #fbf1d6;
+  --tint-teal: #def3f1;
+  --tint-violet: #eee9fb;
+
+  --font-anthropic-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-anthropic-serif: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --cds-font-size-caption: 13px;
+  --cds-font-size-body: 15.5px;
+  --cds-font-size-heading: 18px;
+  --cds-font-size-title: 30px;
+  --cds-font-weight-medium: 600;
+
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 14px; --cds-gap-lg: 20px; --cds-gap-xl: 28px;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-pad-xl: 26px;
+  --cds-radius: 14px;
+
+  --chart-1: #2f6fe4;
+  --chart-2: #8a4fd8;
+  --chart-3: #12a3a0;
+  --chart-4: #e07b39;
+  --cds-chart-muted: #b7c2bd;
+  --cds-chart-status-critical: #e4422f;
+  --cds-chart-grid: #edf1ee;
+  --cds-chart-axis: #c5cec9;
+  --cds-chart-reference: #7d8a85;
+  --cds-text-secondary: #56625e;
+
+  --cds-surface-popover: #ffffff;
+  --cds-border: #d6ddd9;
+  --cds-shadow-popover: 0 10px 30px rgba(12, 59, 49, 0.16);
+  --shadow-card: 0 1px 2px rgba(12, 59, 49, 0.06), 0 6px 18px rgba(12, 59, 49, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) { color-scheme: dark; }
+}
+:root[data-theme=dark], :root:not([data-theme=light]) {
+  /* dark values are applied by the media query block below */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --color-fg: #e8efec;
+    --color-fg-muted: #9fb1aa;
+    --color-bg: #0d1513;
+    --color-panel: #15211d;
+    --color-border-line: #273632;
+    --color-ok: #45c98b;
+    --color-warn: #f5b13c;
+    --color-bad: #ff6b57;
+    --hero-1: #082a23;
+    --hero-2: #0c3b31;
+    --tint-red: #3a1d19;
+    --tint-amber: #3a2c12;
+    --tint-green: #143326;
+    --tint-blue: #172741;
+    --tint-gold: #352b12;
+    --tint-teal: #12302e;
+    --tint-violet: #251d3b;
+    --chart-1: #6e9cf5;
+    --chart-2: #b48cf0;
+    --chart-3: #43cfc9;
+    --chart-4: #f2a46b;
+    --cds-chart-muted: #4f5f59;
+    --cds-chart-status-critical: #ff6b57;
+    --cds-chart-grid: #1f2c28;
+    --cds-chart-axis: #34443f;
+    --cds-chart-reference: #8fa19a;
+    --cds-text-secondary: #a9bab3;
+    --cds-surface-popover: #1b2925;
+    --cds-border: #33443f;
+    --cds-shadow-popover: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}
+:root[data-theme=dark] {
+  color-scheme: dark;
+  --color-fg: #e8efec; --color-fg-muted: #9fb1aa; --color-bg: #0d1513; --color-panel: #15211d; --color-border-line: #273632;
+  --color-ok: #45c98b; --color-warn: #f5b13c; --color-bad: #ff6b57; --hero-1: #082a23; --hero-2: #0c3b31;
+  --tint-red: #3a1d19; --tint-amber: #3a2c12; --tint-green: #143326; --tint-blue: #172741; --tint-gold: #352b12; --tint-teal: #12302e; --tint-violet: #251d3b;
+  --chart-1: #6e9cf5; --chart-2: #b48cf0; --chart-3: #43cfc9; --chart-4: #f2a46b; --cds-chart-muted: #4f5f59; --cds-chart-status-critical: #ff6b57;
+  --cds-chart-grid: #1f2c28; --cds-chart-axis: #34443f; --cds-chart-reference: #8fa19a; --cds-text-secondary: #a9bab3;
+  --cds-surface-popover: #1b2925; --cds-border: #33443f; --cds-shadow-popover: 0 10px 30px rgba(0, 0, 0, 0.5); --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+* { box-sizing: border-box; min-width: 0; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+#dash-root { max-width: 1320px; margin: 0 auto; padding: 0 clamp(10px, 2.5vw, 28px) 40px; }
+
+.dash-select {
+  appearance: none; -webkit-appearance: none;
+  font: inherit; font-size: 14px; min-height: 40px;
+  padding: 8px 32px 8px 12px; border: 1px solid var(--color-border-line); border-radius: 10px;
+  background-color: var(--color-panel); color: var(--color-fg); cursor: pointer; max-width: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23889590' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center;
+}
+.dash-select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.dash-skeleton { position: relative; color: transparent !important; }
+.dash-skeleton::after { content: ''; position: absolute; left: 0; top: 18%; height: 64%; width: 5em; max-width: 100%; border-radius: 6px; background: var(--color-border-line); }
+@media (prefers-reduced-motion: no-preference) {
+  .dash-skeleton::after { animation: gl-pulse 1.2s ease-in-out infinite; }
+  @keyframes gl-pulse { 50% { opacity: .45; } }
+}
